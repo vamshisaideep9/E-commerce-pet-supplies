@@ -33,3 +33,10 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []  # No username required
 
     objects = UserManager()  # Use the custom UserManager
+
+
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    loyality_points = models.IntegerField(default=0)
