@@ -38,13 +38,17 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
+ #----------------------------------
+    "django.contrib.sites",
 
     #third-party apps
     "rest_framework",
     "rest_framework_simplejwt",
 
-
+    #authentication
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
 
     #local apps
     "orders",
@@ -54,6 +58,24 @@ INSTALLED_APPS = [
     "recommendations"
 ]
 
+
+AUTH_USER_MODEL = "users.User"
+
+
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+
+#django-allauth configuration
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_LOGIN_METHODS = ["email"]
+ACCOUNT_EMAIL_VERIFICATION = "mandatory" #email verification required
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -62,6 +84,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
+    "allauth.account.middleware.AccountMiddleware"
 ]
 
 
@@ -120,7 +144,7 @@ load_dotenv()
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("DB_NAME", "pet_supplies"),
+        "NAME": os.getenv("DB_NAME", "pets_db"),
         "USER": os.getenv("DB_USER", "postgres"),
         "PASSWORD": os.getenv("DB_PASSWORD"),
         "HOST": os.getenv("DB_HOST", "localhost"),
